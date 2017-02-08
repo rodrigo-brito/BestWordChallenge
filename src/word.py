@@ -21,11 +21,25 @@ class Word:
 	# Save the aditional information from words
 	# sourceLetters [string] avaliable letters for construct
 	# unusedLetters [list] list of unused letters
-	def saveSourceInformation(self, sourceLetters, unusedLetters):
+	def saveSourceInformation(self, sourceLetters):
 		self.sourceLetters = sourceLetters
-		self.unusedLetters = unusedLetters
+		self.unusedLetters = self.getUnusedLetters( self.sourceLetters, self.content )
 
-	# Print the object information
+	# Verify letters not used in construction
+	# source [string] initial letters avaliable for construction
+	# word [string] final word contructed
+	def getUnusedLetters (self, source, word):
+		for letter in source:
+			if letter in word:
+				# For each ocorrency remove the letter
+				source = source.replace(letter, "", 1)
+				word = word.replace(letter, "", 1)
+		return list(source)
+
+	# Summarizes the word information
+	# return [string] word information
 	def __str__(self):
-		unusedLetters = ''.join(self.unusedLetters)
-		return self.content + " " + unusedLetters+ " " + str(self.points)
+		output = self.content + ", palavra tem "  + str( self.points ) + " pontos."
+		if self.unusedLetters:
+			output += "\nSobraram: " + " ".join( self.unusedLetters )
+		return output
